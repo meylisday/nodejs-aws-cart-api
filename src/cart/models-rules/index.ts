@@ -7,7 +7,6 @@ import { CartItem } from '../entity/cart-item.entity';
 export function calculateCartTotal(items: CartItem[]): number {
   return items
     ? items.reduce((acc: number, { product, count }: CartItem) => {
-        console.log('product', product);
         const productPrice = product?.price || 0;
         return (acc += productPrice * count);
       }, 0)

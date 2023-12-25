@@ -9,6 +9,7 @@ import { CartEntity } from './cart/entity/cart.entity';
 import { CartItem } from './cart/entity/cart-item.entity';
 import { UserEntity } from './users/entity/user.entity';
 import { ProductEntity } from './cart/entity/product.entity';
+import { OrderEntity } from './order/entity/order.entity';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { ProductEntity } from './cart/entity/product.entity';
           database: process.env.PG_DATABASE!,
           username: process.env.PG_USERNAME!,
           password: process.env.PG_PASSWORD!,
-          entities: [CartEntity, CartItem, UserEntity, ProductEntity],
+          entities: [CartEntity, CartItem, UserEntity, ProductEntity, OrderEntity],
           synchronize: false,
         };
         console.log('Connection options:', connectionOptions);

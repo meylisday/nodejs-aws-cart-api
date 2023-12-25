@@ -12,13 +12,8 @@ export class UsersService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async findOne(userId: string): Promise<UserEntity> {
-    console.log('findOne')
-    return this.userRepository.findOne({
-      where: {
-        id: userId,
-      },
-    });
+  async findUser(name: string): Promise<UserEntity> {
+    return this.userRepository.findOneBy({name: name});
   }
 
   async createOne({ name, password }: User): Promise<UserEntity> {
