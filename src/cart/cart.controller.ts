@@ -74,8 +74,10 @@ export class CartController {
   async checkout(@Req() req: AppRequest, @Body() body) {
     try {
       const userId = getUserIdFromRequest(req);
+      console.log('userID', userId);
       const userCart = await this.cartService.findByUserId(userId);
 
+      console.log('userCart', userCart);
       if (!userCart) {
         const statusCode = HttpStatus.BAD_REQUEST;
         req.statusCode = statusCode;
@@ -87,6 +89,9 @@ export class CartController {
       }
 
       const items = await this.cartService.getItems(userCart);
+
+      console.log('items', items);
+      
       const total = calculateCartTotal(items);
       const order = await this.orderService.create({
         ...body,

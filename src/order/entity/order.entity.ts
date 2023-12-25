@@ -6,17 +6,13 @@ export class OrderEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ name: 'user_id', type: 'uuid', nullable: true })
   userId: string;
 
-  @Column()
+  @Column({ name: 'cart_id', type: 'uuid', nullable: true })
   cartId: string;
 
-  @Column({ type: 'jsonb' })
-  items: CartItem[];
-
   @Column('jsonb', { nullable: true })
-
   payment: {
     type: string;
     address?: any;
@@ -24,14 +20,12 @@ export class OrderEntity {
   };
 
   @Column('jsonb', { nullable: true })
-
   delivery: {
     type: string;
     address: any;
   };
 
   @Column('jsonb', { nullable: true })
-
   comments: string;
 
   @Column()

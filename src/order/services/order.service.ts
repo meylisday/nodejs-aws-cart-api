@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
-
 import { Order } from '../models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderEntity } from '../entity/order.entity';
@@ -18,7 +17,7 @@ export class OrderService {
   }
 
   async create(data: any): Promise<OrderEntity> {
-    return this.orderRepository.save({ ...data,  status: 'inProgress'});
+    return this.orderRepository.save({...data, id: v4(), status: 'OPEN'});
   }
 
   //TODO Updata
