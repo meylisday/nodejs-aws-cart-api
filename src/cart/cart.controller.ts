@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { BasicAuthGuard, JwtAuthGuard } from '../auth';
+import { JwtAuthGuard } from '../auth';
 import { OrderService } from '../order';
 import { AppRequest, getUserIdFromRequest } from '../shared';
 
@@ -38,36 +38,31 @@ export class CartController {
     };
   }
 
-  //TODO CHECK
-  // @UseGuards(JwtAuthGuard)
-  // @Put()
-  // async updateUserCart(@Req() req: AppRequest, @Body() body) {
-  //   const { cart, items } = await this.cartService.updateByUserId(
-  //     getUserIdFromRequest(req),
-  //     body,
-  //   );
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  async updateUserCart(@Req() req: AppRequest, @Body() body) {
+    const { cart, items } = await this.cartService.updateByUserId(getUserIdFromRequest(req), body);
 
-  //   return {
-  //     statusCode: HttpStatus.OK,
-  //     message: 'OK',
-  //     data: {
-  //       cart,
-  //       total: calculateCartTotal(items),
-  //     },
-  //   };
-  // }
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'OK',
+      data: {
+        cart,
+        total: calculateCartTotal(items),
+      },
+    };
+  }
 
-  //TODO CHECK
-  // @UseGuards(JwtAuthGuard)
-  // @Delete()
-  // async clearUserCart(@Req() req: AppRequest) {
-  //   await this.cartService.removeByUserId(getUserIdFromRequest(req));
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  async clearUserCart(@Req() req: AppRequest) {
+    await this.cartService.removeByUserId(getUserIdFromRequest(req));
 
-  //   return {
-  //     statusCode: HttpStatus.OK,
-  //     message: 'OK',
-  //   };
-  // }
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'OK',
+    };
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('checkout')
