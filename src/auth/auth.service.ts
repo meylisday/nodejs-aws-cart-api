@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/services/users.service';
-import { User } from '../users/models';
-import { contentSecurityPolicy } from 'helmet';
+import { UsersService } from "../users";
+import { User } from "../users";
 
 @Injectable()
 export class AuthService {
@@ -11,9 +10,8 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  validateUser(name: string, password: string): any {
-    const user = this.usersService.findOne(name);
-
+  async validateUser(name: string, password: string) {
+    const user = await this.usersService.findUser(name);
     if (user) {
       return user;
     }
@@ -21,19 +19,25 @@ export class AuthService {
     return this.usersService.createOne({ name, password })
   }
 
-  login(user: User, type) {
-    const LOGIN_MAP = {
-      jwt: this.loginJWT,
-      basic: this.loginBasic,
-      default: this.loginJWT,
-    }
-    const login = LOGIN_MAP[ type ]
+  async login(params: User, type) {
+    const user = await this.usersService.findUser(params.name);
 
-    return login ? login(user) : LOGIN_MAP.default(user);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    const LOGIN_MAP = {
+      jwt: () => this.loginJWT(user),
+      basic: () => this.loginBasic(user),
+      default: () => this.loginJWT(user),
+    }
+    const login = LOGIN_MAP[type];
+
+    return login ? login(user) : LOGIN_MAP.default();
   }
 
   loginJWT(user: User) {
-    const payload = { username: user.name, sub: user.id };
+    const payload = { name: user.name, id: user.id };
 
     return {
       token_type: 'Bearer',
@@ -42,11 +46,8 @@ export class AuthService {
   }
 
   loginBasic(user: User) {
-    // const payload = { username: user.name, sub: user.id };
-    console.log(user);
-
     function encodeUserToken(user) {
-      const { id, name, password } = user;
+      const { name, password } = user;
       const buf = Buffer.from([name, password].join(':'), 'utf8');
 
       return buf.toString('base64');
@@ -57,7 +58,4 @@ export class AuthService {
       access_token: encodeUserToken(user),
     };
   }
-
-
-
 }

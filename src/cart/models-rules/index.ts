@@ -1,11 +1,14 @@
-import { Cart, CartItem } from '../models';
+import { CartItem } from '../entity/cart-item.entity';
 
 /**
- * @param {Cart} cart
+ * @param {CartItem[]} items
  * @returns {number}
  */
-export function calculateCartTotal(cart: Cart): number {
-  return cart ? cart.items.reduce((acc: number, { product: { price }, count }: CartItem) => {
-    return acc += price * count;
-  }, 0) : 0;
+export function calculateCartTotal(items: CartItem[]): number {
+  return items
+    ? items.reduce((acc: number, { product, count }: CartItem) => {
+        const productPrice = product?.price || 0;
+        return (acc += productPrice * count);
+      }, 0)
+    : 0;
 }
