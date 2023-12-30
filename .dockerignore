@@ -1,0 +1,14 @@
+# node_modules & dist folders are re-created whenever npm install + npm run build is run
+node_modules
+dist
+
+# Exclude editor-related files and directories
+# These are not needed in the production image
+.vscode/
+.idea/
+
+# Exclude test files and directories
+# Tests are usually not required in the production image
+__tests__/
+test/
+tests/

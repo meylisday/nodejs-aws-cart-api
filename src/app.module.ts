@@ -4,18 +4,15 @@ import { AppController } from './app.controller';
 import { CartModule } from './cart/cart.module';
 import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './order/order.module';
-import { ConfigModule } from '@nestjs/config';
 import { CartEntity } from './cart/entity/cart.entity';
 import { CartItem } from './cart/entity/cart-item.entity';
 import { UserEntity } from './users/entity/user.entity';
 import { ProductEntity } from './cart/entity/product.entity';
 import { OrderEntity } from './order/entity/order.entity';
+import 'dotenv/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
     AuthModule,
     CartModule,
     OrderModule,
