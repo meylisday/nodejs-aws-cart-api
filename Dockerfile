@@ -1,36 +1,24 @@
-# Use the official Node.js version 18 image as the base image
-FROM node:18-alpine as build
+# Use an optimized node version `-alpine`
+FROM node:lts-alpine
 
-# Set the working directory in the container
-WORKDIR /app
+# Set working directory
+WORKDIR /aws_cd_nodejs_cart_api
 
-# Copy package.json and package-lock.json to the container
+# Copy package.json & package-lock.json
 COPY package*.json ./
 
-# Install the project dependencies
+# Install dependencies
+# RUN npm ci --only=production
 RUN npm install
 
-# Copy all the application files to the container
+# Bundling
 COPY . .
 
-# Build the Nest.js application
+# Building inside the container
 RUN npm run build
 
-# Use a smaller, production-ready image as the base image
-FROM node:18-slim
+# Expose port
+EXPOSE 4000
 
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy only the necessary files from the previous build stage
-COPY --from=build /app/package*.json ./
-COPY --from=build /app/dist ./dist
-
-# Install only production dependencies to reduce image size
-RUN npm install --production
-
-# Expose the port on which your Nest.js application runs
-EXPOSE 3000
-
-# Set the command to start your Nest.js application
-CMD ["node", "dist/main.js"]
+# Execute on entry
+ENTRYPOINT [ "node", "dist/main.js" ]
