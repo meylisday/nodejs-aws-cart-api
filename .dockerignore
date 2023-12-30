@@ -3,7 +3,6 @@ node_modules/
 
 # Exclude development-related files and directories
 # These are not needed in the production image
-Dockerfile
 .dockerignore
 .git
 .gitignore
