@@ -25,7 +25,6 @@ WORKDIR /app
 # Copy only the necessary files from the previous build stage
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/dist ./dist
-COPY .env ./
 
 # Install only production dependencies to reduce image size
 RUN npm install --production
