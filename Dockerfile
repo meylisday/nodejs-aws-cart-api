@@ -2,7 +2,7 @@
 FROM node:lts-alpine
 
 # Set working directory
-WORKDIR /aws_cd_nodejs_cart_api
+WORKDIR /nodejs-aws-cart-api
 
 # Copy package.json & package-lock.json
 COPY package*.json ./
