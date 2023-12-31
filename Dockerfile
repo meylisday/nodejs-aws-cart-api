@@ -1,24 +1,26 @@
-# Use an optimized node version `-alpine`
-FROM node:lts-alpine
+# Base image
+FROM node:18-alpine
 
-# Set working directory
-WORKDIR /nodejs-aws-cart-api
+# Create app directory
+WORKDIR /usr/src/app
 
-# Copy package.json & package-lock.json
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
-# Install dependencies
-# RUN npm ci --only=production
+# Install app dependencies
 RUN npm install
 
-# Bundling
+# Bundle app source
 COPY . .
 
-# Building inside the container
+# Copy the .env and .env.development files
+COPY .env ./
+
+# Creates a "dist" folder with the production build
 RUN npm run build
 
-# Expose port
+# Expose the port on which the app will run
 EXPOSE 4000
 
-# Execute on entry
-ENTRYPOINT [ "node", "dist/main.js" ]
+# Start the server using the production build
+CMD ["npm", "run", "start:prod"]
