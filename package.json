@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "NODE_OPTIONS='--max_old_space_size=4096' nest build",
+    "build": "nest build",
     "cdk:deploy": "cdk deploy --require-approval never",
     "cdk:destroy": "cdk destroy --force",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
